@@ -47,8 +47,6 @@ const ImagePage = () => {
 
       const res = await axios.post('/api/image', values)
 
-      await axios.post('/api/image/write', res.data)
-
       const urls = res.data.map((i: { url: string }) => i.url)
 
       setImages(urls)
@@ -63,7 +61,11 @@ const ImagePage = () => {
   }
 
   useEffect(() => {
-    setImages(initImages[2].data.map((d) => d.url))
+    setImages([
+      '/img-gen-sample-1.png',
+      '/img-gen-sample-2.png',
+      '/img-gen-sample-3.png',
+    ])
   }, [])
 
   return (

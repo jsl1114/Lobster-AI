@@ -14,9 +14,7 @@ Lobster AI is a paid AI service that combines major AI platforms and further enh
 The application will store `Users`, `Subscription` and `History`
 
 * each user is linked to a subscription of three tiers: `free`, `standard` and `pro` (via references)
-* each user has a history, which records that user's former requests within the app
-
-(__TODO__: sample documents)
+* each user has a history, which records that user's former requests within the app (viewable upon updrading to standard or pro tier)
 
 An Example User:
 
@@ -58,27 +56,41 @@ An Example History
 ```
 
 
-## [Link to Commented First Draft Schema](db.mjs) 
+## [Link to Commented First Draft Schema](https://github.com/nyu-csci-ua-0467-001-002-spring-2024/final-project-jsl1114/blob/master/prisma/schema.prisma)) 
 
-(__TODO__: create a first draft of your Schemas in db.mjs and link to it)
+*note: this app uses [prisma ORM](https://www.prisma.io/), schema is stored within [/prisma/schema.prisma](./prisma/schema.prisma)*
 
 ## Wireframes
 
 (__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
 
-/list/create - page for creating a new shopping list
+/ - landing page
 
-![list create](documentation/list-create.png)
+![landing](./documentation/Landing.png)
 
-/list - page for showing all shopping lists
+/dashboard - dashboard page for an overview of all services
 
-![list](documentation/list.png)
+![dashboard](./documentation/dashboard.png)
 
-/list/slug - page for showing specific shopping list
+/conversation - page for conversation with lobster
 
-![list](documentation/list-slug.png)
+![conversation](./documentation/conversation.png)
 
-## Site map
+/image - page for image generation
+
+![image](./documentation/image.png)
+
+/video - page for video generation
+
+![video](./documentation/video.png)
+
+/code - page for code generation
+
+![code](./documentation/code.png)
+
+/music - page for music generation
+
+![music](./documentation/music.png)
 
 (__TODO__: draw out a site map that shows how pages are related to each other)
 
@@ -86,14 +98,11 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 
 ## User Stories or Use Cases
 
-(__TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://en.wikipedia.org/wiki/Use_case))
-
 1. as non-registered user, I can register a new account with the site
-2. as a user, I can log in to the site
-3. as a user, I can create a new grocery list
-4. as a user, I can view all of the grocery lists I've created in a single list
-5. as a user, I can add items to an existing grocery list
-6. as a user, I can cross off items in an existing grocery list
+2. as a new user defaulted to free tier, I can log in to the site and pay for upgrades
+3. as a free tier user, I can send a total of 10 request to the api as free trial. After that, I will be instructed to pay for an upgrade in order to continue using the app
+4. as a standard tier user, I pay 39 dollars a month and have access to all the generation tools, with limit on certain features
+5. as a pro tier user, I pay 49 dollars a month and have access to all of the features on the website with the newest models, plus access to user history, which shows the past quries and responses, up tp 90 days
 
 ## Research Topics
 
@@ -107,15 +116,13 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 * (4 points) Perform client side form validation using a JavaScript library
     * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
     * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+* (5 points) next.js
+    * used next.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
 
-10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
+10 points total out of 8 required points 
 
 
-## [Link to Initial Main Project File](app.mjs) 
-
-(__TODO__: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
+## [Link to Initial Main Project File](/app/) 
 
 ## Annotations / References Used
 
