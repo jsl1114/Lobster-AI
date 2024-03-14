@@ -66,7 +66,7 @@ An Example History
 
 / - landing page
 
-![landing](./documentation/Landing.png)
+![landing](./documentation/landing.png)
 
 /dashboard - dashboard page for an overview of all services
 
