@@ -1,26 +1,20 @@
 The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
 
-(__TODO__: your project name)
-
-# Shoppy Shoperson 
+# Lobster AI
 
 ## Overview
 
-(__TODO__: a brief one or two paragraph, high-level description of your project)
+Recall how you have to wander around the internet on different platforms to find different AI services such as music and video generation... 
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
-
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
+Lobster AI is a paid AI service that combines major AI platforms and further enhances your interactions with AI. Let the Lobster be in the palm of your hand! Start to have conversations, generate image, music, videos, code with the powerful Lobster! 
 
 
 ## Data Model
 
-(__TODO__: a description of your application's data and their relationships to each other) 
+The application will store `Users`, `Subscription` and `History`
 
-The application will store Users, Lists and Items
-
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
+* each user is linked to a subscription of three tiers: `free`, `standard` and `pro` (via references)
+* each user has a history, which records that user's former requests within the app
 
 (__TODO__: sample documents)
 
@@ -28,23 +22,38 @@ An Example User:
 
 ```javascript
 {
+  id: 'h1i2uhupuohr10' // use for reference
   username: "shannonshopper",
   hash: // a password hash,
-  lists: // an array of references to List documents
 }
 ```
 
-An Example List with Embedded Items:
+An Example Subscription
 
 ```javascript
 {
   user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
+  tier: "free", // the tier which the user is in
   createdAt: // timestamp
+}
+```
+
+An Example History
+
+```javascript
+{
+  user: // a reference to a User object
+  history: [ // arr of former reqs made 
+    {
+      prompt: 'how to embed a youtube link in html?'
+      createdAt: // timestamp
+    },
+    {
+      prompt: 'list of best ramen shops in NYC',
+      createdAt: // timestamp
+    },
+    ...
+  ]
 }
 ```
 
@@ -114,4 +123,3 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 
 1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
 2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
-
