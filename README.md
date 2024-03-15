@@ -129,9 +129,7 @@ flowchart TB
 |   1    |     OpenAI DALL·E API  <br> (with finetuning.)     | [link](https://platform.openai.com/docs/guides/images?context=node  )                  |
 |   1    |           Replicate AI music generation            | [link](https://replicate.com/docs/get-started/nextjs)                                  |
 
-More to be added. Total of **23 / 10** points
-
-10 points total out of 8 required points 
+More to be added. Total of **23 / 8** points
 
 
 ## [Link to Initial Main Project File](/app/) 
