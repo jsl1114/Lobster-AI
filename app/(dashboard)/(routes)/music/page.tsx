@@ -13,16 +13,15 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
-import { cn } from '@/lib/utils'
-import { UserAvatar } from '@/components/user-avatar'
-import { BotAvatar } from '@/components/bot-avatar'
+import Image from 'next/image'
 
 const MusicPage = () => {
   const router = useRouter()
-  const [messages, setMessages] = useState<any[]>([])
+  const [music, setMusic] = useState<string>()
+  const [spectrogram, setSpectrogram] = useState<string>()
+  const [prompt, setPrompt] = useState<string>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,18 +34,15 @@ const MusicPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionMessageParam = {
-        role: 'user',
-        content: values.prompt,
-      }
-      const newMessages = [...messages, userMessage]
+      setMusic(undefined)
+      setSpectrogram(undefined)
+      setPrompt(undefined)
 
-      const res = await axios.post('/api/conversation', {
-        messages: newMessages,
-      })
+      const response = await axios.post('/api/music', values)
 
-      setMessages((current) => [...current, userMessage, res.data])
-
+      setMusic(response.data.audio)
+      setSpectrogram(response.data.spectrogram)
+      setPrompt(values.prompt)
       form.reset()
     } catch (err: any) {
       // TODO: open Pro Modal for upgrade
@@ -97,28 +93,28 @@ const MusicPage = () => {
         <div className='space-y-4 mt-4'>
           {isLoading && (
             <div className='p-8 rounded-lg w-full flex items-center justify-center bg-muted'>
-              <Loader />
+              <Loader message='note: music generation usually takes 1-2 minutes... hang on!' />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label='start typing to ask the magic lobster!' />
-          )}
-          <div className='flex flex-col-reverse gap-y-4'>
-            {messages.map((m) => (
-              <div
-                key={m.content}
-                className={cn(
-                  'p-8 w-full flex items-start gap-x-8 rounded-lg',
-                  m.role === 'user'
-                    ? 'bg-white border border-black/10'
-                    : 'bg-muted'
-                )}
+          {!music && !isLoading && <Empty label='No music generated' />}
+          {music && spectrogram && (
+            <div className='relative flex flex-col mt-8 w-full items-center justify-center'>
+              <em className='text-sm'>{prompt}</em>
+              <Image
+                src={spectrogram}
+                alt='spectrogram'
+                width={200}
+                height={200}
+                className='mb-5'
+              />
+              <audio
+                className='w-full'
+                controls
               >
-                {m.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                <p className='text-sm'>{m.content}</p>
-              </div>
-            ))}
-          </div>
+                <source src={music} />
+              </audio>
+            </div>
+          )}
         </div>
       </div>
     </div>

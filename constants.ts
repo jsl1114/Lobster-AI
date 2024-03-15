@@ -6,7 +6,8 @@ import {
   VideoIcon,
 } from 'lucide-react'
 
-export const MAX_FREE_COUNTS = 5
+// free trial counts
+export const MAX_FREE_COUNTS = 10
 
 export const tools = [
   {

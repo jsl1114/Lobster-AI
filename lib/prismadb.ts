@@ -1,3 +1,5 @@
+// add prismadb to global window
+
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
@@ -8,8 +10,8 @@ declare global {
   var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
 }
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+const prismadb = globalThis.prismaGlobal ?? prismaClientSingleton()
 
-export default prisma
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prismadb
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+export default prismadb

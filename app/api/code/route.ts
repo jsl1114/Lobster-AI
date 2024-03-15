@@ -2,24 +2,33 @@ import { auth } from '@clerk/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+import { increaseApiLimit, checkAPiLimit } from '@/lib/api-limit'
 
 const models = {
-  chatgpt: 'https://api.openai.com/v1/',
-  pawan: 'https://api.pawan.krd/v1/',
+  chatgpt: {
+    baseUrl: 'https://api.openai.com/v1/',
+    apiKey: process.env['OPENAI_API_KEY'],
+    model: 'gpt-3.5-turbo-0125',
+  },
+  pawan: {
+    baseUrl: 'https://api.pawan.krd/v1/',
+    apiKey: process.env['API_PROXY_KEY'],
+    model: 'pai-001',
+  },
 }
 
 const openai = new OpenAI({
-  baseURL: models.pawan,
-  apiKey: process.env['API_PROXY_KEY'],
+  baseURL: models.chatgpt.baseUrl,
+  apiKey: models.chatgpt.apiKey,
 })
 
 const instructionMessage: ChatCompletionMessageParam = {
   role: 'system',
   content:
-    'You are a code generator. You must answer only in markdown code snippets. Use code comments for explanations. Make sure your markdown code render correctly with the react-markdown package',
+    'You are a code generator. You will answer in markdown style, along with plain texts. Do not include the leading ```markdown and trailing ```',
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const { userId } = auth()
     const body = await req.json()
@@ -37,10 +46,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return new NextResponse('Messages are required', { status: 400 })
     }
 
+    const freeTrial = await checkAPiLimit()
+
+    if (!freeTrial)
+      return new NextResponse('Free trial has expired', { status: 403 }) //trigger the upgrade modal
+
     const response = await openai.chat.completions.create({
       messages: [instructionMessage, ...messages],
-      model: 'pai-001',
+      model: models.chatgpt.model,
     })
+
+    await increaseApiLimit()
 
     return NextResponse.json(response.choices[0].message)
   } catch (err) {

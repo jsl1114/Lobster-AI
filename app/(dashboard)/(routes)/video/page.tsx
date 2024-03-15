@@ -13,16 +13,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
-import { cn } from '@/lib/utils'
-import { UserAvatar } from '@/components/user-avatar'
-import { BotAvatar } from '@/components/bot-avatar'
+import Image from 'next/image'
 
-const ConversationPage = () => {
+const VideoPage = () => {
   const router = useRouter()
-  const [messages, setMessages] = useState<any[]>([])
+  const [video, setVideo] = useState<string>()
+  const [prompt, setPrompt] = useState<string>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,18 +33,13 @@ const ConversationPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionMessageParam = {
-        role: 'user',
-        content: values.prompt,
-      }
-      const newMessages = [...messages, userMessage]
+      setVideo(undefined)
+      setPrompt(undefined)
 
-      const res = await axios.post('/api/conversation', {
-        messages: newMessages,
-      })
+      const response = await axios.post('/api/video', values)
 
-      setMessages((current) => [...current, userMessage, res.data])
-
+      setVideo(response.data[0])
+      setPrompt(values.prompt)
       form.reset()
     } catch (err: any) {
       // TODO: open Pro Modal for upgrade
@@ -60,7 +53,7 @@ const ConversationPage = () => {
     <div>
       <Heading
         title='Video Generation'
-        description='Ready, play!'
+        description='Turn your prompt into video'
         icon={VideoIcon}
         iconColor='text-orange-500'
         bgColor='bg-orange-500/10'
@@ -79,7 +72,7 @@ const ConversationPage = () => {
                     <Input
                       className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
                       disabled={isLoading}
-                      placeholder='A racoon walking on ice'
+                      placeholder='racoon walking on ice'
                       {...field}
                     />
                   </FormControl>
@@ -97,31 +90,24 @@ const ConversationPage = () => {
         <div className='space-y-4 mt-4'>
           {isLoading && (
             <div className='p-8 rounded-lg w-full flex items-center justify-center bg-muted'>
-              <Loader />
+              <Loader message='note: video generation might take longer... hold on!' />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label='start typing to ask the magic lobster!' />
-          )}
-          <div className='flex flex-col-reverse gap-y-4'>
-            {messages.map((m) => (
-              <div
-                key={m.content}
-                className={cn(
-                  'p-8 w-full flex items-start gap-x-8 rounded-lg',
-                  m.role === 'user'
-                    ? 'bg-white border border-black/10'
-                    : 'bg-muted'
-                )}
+          {!video && !isLoading && <Empty label='No video generated' />}
+          {video && (
+            <div className='relative flex flex-col mt-8 w-full items-center justify-center'>
+              <em className='text-sm'>{prompt}</em>
+              <video
+                className='w-full aspect-video mt-4 rounded-lg border bg-black'
+                controls
               >
-                {m.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                <p className='text-sm'>{m.content}</p>
-              </div>
-            ))}
-          </div>
+                <source src={video} />
+              </video>
+            </div>
+          )}
         </div>
       </div>
     </div>
   )
 }
-export default ConversationPage
+export default VideoPage

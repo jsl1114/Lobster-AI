@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+import { increaseApiLimit, checkAPiLimit } from '@/lib/api-limit'
 
 const models = {
   chatgpt: 'https://api.openai.com/v1/',
@@ -37,10 +38,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return new NextResponse('Messages are required', { status: 400 })
     }
 
+    const freeTrial = await checkAPiLimit()
+
+    if (!freeTrial)
+      return new NextResponse('Free trial has expired', { status: 403 }) //trigger the upgrade modal
+
     const response = await openai.chat.completions.create({
       messages: [instructionMessage, ...messages],
       model: 'pai-001',
     })
+
+    await increaseApiLimit()
 
     return NextResponse.json(response.choices[0].message)
   } catch (err) {

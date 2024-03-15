@@ -7,25 +7,10 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
-model cats {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  v          Int      @map("__v")
-  lives      Int?
-  name       String
-  updated_at DateTime @db.Date
-}
-
-model posts {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  v        Int      @map("__v")
-  postDate DateTime @db.Date
-  text     String
-}
-
-model users {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  v        Int      @map("__v")
-  password String
-  post     String[]
-  username String
+model UserApiLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

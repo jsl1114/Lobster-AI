@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 export const UserAvatar = () => {
   const user = useUser()
   return (
-    <Avatar className='h-8 w-8'>
+    <Avatar className='h-9 w-9'>
       <AvatarImage src={user?.user?.imageUrl} />
       <AvatarFallback>
         {user.user?.firstName?.charAt(0)}
