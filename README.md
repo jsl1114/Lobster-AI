@@ -54,7 +54,7 @@ An Example History
 ```
 
 
-## [Link to Commented First Draft Schema](https://github.com/nyu-csci-ua-0467-001-002-spring-2024/final-project-jsl1114/blob/master/prisma/schema.prisma)) 
+## [Link to Commented First Draft Schema](https://github.com/nyu-csci-ua-0467-001-002-spring-2024/final-project-jsl1114/blob/master/prisma/schema.prisma)
 
 *note: this app uses [prisma ORM](https://www.prisma.io/), schemas are stored within [/prisma/schema.prisma](./prisma/schema.prisma)*
 
