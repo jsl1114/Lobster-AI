@@ -13,6 +13,12 @@ const openai = new OpenAI({
   apiKey: process.env['API_PROXY_KEY'],
 })
 
+const instructionMessage: ChatCompletionMessageParam = {
+  role: 'system',
+  content:
+    'Your name is LobsterAI, a large language model trained by Jason Liu',
+}
+
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const { userId } = auth()
@@ -32,7 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     const response = await openai.chat.completions.create({
-      messages,
+      messages: [instructionMessage, ...messages],
       model: 'pai-001',
     })
 
