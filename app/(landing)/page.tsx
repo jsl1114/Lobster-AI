@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className='h-full'>
       <Link href='/sign-in'>
         <Button>Login</Button>
       </Link>
