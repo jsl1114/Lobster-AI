@@ -16,8 +16,10 @@ import { useState } from 'react'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 import Image from 'next/image'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 const VideoPage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [video, setVideo] = useState<string>()
   const [prompt, setPrompt] = useState<string>()
@@ -42,8 +44,9 @@ const VideoPage = () => {
       setPrompt(values.prompt)
       form.reset()
     } catch (err: any) {
-      // TODO: open Pro Modal for upgrade
-      console.log(err)
+      if (err?.response?.status === 403) {
+        proModal.onOpen()
+      }
     } finally {
       router.refresh()
     }

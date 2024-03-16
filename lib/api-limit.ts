@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs'
 
 import prismadb from './prismadb'
 import { MAX_FREE_COUNTS } from '@/constants'
+import { clerkClient } from '@clerk/nextjs/server'
 
 export const increaseApiLimit = async () => {
   const { userId } = auth()
@@ -9,6 +10,10 @@ export const increaseApiLimit = async () => {
   if (!userId) {
     return
   }
+
+  const user = await clerkClient.users.getUser(userId)
+
+  const { firstName, lastName, emailAddresses, imageUrl } = user
 
   const userApiLimit = await prismadb.userApiLimit.findUnique({
     where: {
@@ -26,6 +31,15 @@ export const increaseApiLimit = async () => {
       data: {
         userId: userId,
         count: 1,
+      },
+    })
+    await prismadb.userInfo.create({
+      data: {
+        userId,
+        firstName: firstName || '',
+        lastName: lastName || '',
+        email: emailAddresses[0].emailAddress,
+        imageUrl,
       },
     })
   }

@@ -96,7 +96,7 @@ const Sidebar = ({ apiLimitCount = 0 }: SidebarProps) => {
               key={r.href}
               className={cn(
                 'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-xl transition',
-                pathname === r.href ? 'text-white bg-white/10' : 'text-zinc-400'
+                pathname === r.href ? 'text-white bg-white/10' : 'text-inc-400'
               )}
             >
               <div className='flex items-center flex-1'>

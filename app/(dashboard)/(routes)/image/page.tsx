@@ -24,9 +24,10 @@ import {
 } from '@/components/ui/select'
 import Image from 'next/image'
 import { Card, CardFooter } from '@/components/ui/card'
-import initImages from '@/app/api/image/write/images.json'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 const ImagePage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [images, setImages] = useState<string[]>([])
 
@@ -53,8 +54,9 @@ const ImagePage = () => {
 
       form.reset()
     } catch (err: any) {
-      // TODO: open Pro Modal for upgrade
-      console.log(err)
+      if (err?.response?.status === 403) {
+        proModal.onOpen()
+      }
     } finally {
       router.refresh()
     }

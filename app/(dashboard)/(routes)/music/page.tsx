@@ -16,8 +16,10 @@ import { useState } from 'react'
 import { Empty } from '@/components/empty'
 import { Loader } from '@/components/loader'
 import Image from 'next/image'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 const MusicPage = () => {
+  const proModal = useProModal()
   const router = useRouter()
   const [music, setMusic] = useState<string>()
   const [spectrogram, setSpectrogram] = useState<string>()
@@ -45,8 +47,9 @@ const MusicPage = () => {
       setPrompt(values.prompt)
       form.reset()
     } catch (err: any) {
-      // TODO: open Pro Modal for upgrade
-      console.log(err)
+      if (err?.response?.status === 403) {
+        proModal.onOpen()
+      }
     } finally {
       router.refresh()
     }
