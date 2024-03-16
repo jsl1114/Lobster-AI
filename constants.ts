@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 
 // free trial counts
-export const MAX_FREE_COUNTS = 10
+export const MAX_FREE_COUNTS = 30
 
 export const tools = [
   {
