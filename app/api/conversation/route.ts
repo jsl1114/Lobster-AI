@@ -10,8 +10,8 @@ const models = {
 }
 
 const openai = new OpenAI({
-  baseURL: models.pawan,
-  apiKey: process.env['API_PROXY_KEY'],
+  baseURL: models.chatgpt,
+  apiKey: process.env['OPENAI_API_KEY'],
 })
 
 const instructionMessage: ChatCompletionMessageParam = {
@@ -20,7 +20,7 @@ const instructionMessage: ChatCompletionMessageParam = {
     'Your name is LobsterAI, a large language model trained by Jason Liu',
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const { userId } = auth()
     const body = await req.json()
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const response = await openai.chat.completions.create({
       messages: [instructionMessage, ...messages],
-      model: 'pai-001',
+      model: 'gpt-3.5-turbo-0125',
     })
 
     await increaseApiLimit()

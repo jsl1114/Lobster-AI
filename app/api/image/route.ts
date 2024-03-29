@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Free trial has expired', { status: 403 }) //trigger the upgrade modal
 
     const response = await openai.images.generate({
-      model: 'dall-e-2',
+      model: 'dall-e-3',
       prompt: prompt,
       n: parseInt(amount, 10),
       size: resolution,

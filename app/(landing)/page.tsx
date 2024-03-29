@@ -3,8 +3,11 @@ import Link from 'next/link'
 
 const LandingPage = () => {
   return (
-    <div className='h-full'>
-      <Link href='/sign-in'>
+    <div>
+      <Link
+        href='/sign-in'
+        className='pr-10'
+      >
         <Button>Login</Button>
       </Link>
       <Link href='/sign-up'>

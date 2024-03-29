@@ -113,8 +113,8 @@ flowchart TB
 1. as non-registered user, I can register a new account with the site
 2. as a new user defaulted to free tier, I can log in to the site and pay for upgrades
 3. as a free tier user, I can send a total of 10 requests to the api as free trial. After that, I will be instructed to pay for an upgrade in order to continue using the app
-4. as a standard tier user, I pay 39 dollars a month and have access to all the generation tools, with limit on certain features
-5. as a pro tier user, I pay 49 dollars a month and have access to all of the features on the website with the newest models, plus access to user history, which shows the past quries and responses, up tp 90 days
+4. as a standard tier user, I pay 39.99 dollars a month and have access to all the generation tools, with limit on certain features
+5. as a pro tier user, I pay 49.99 dollars a month and have access to all of the features on the website with the newest models, plus access to user history, which shows the past quries and responses, up tp 90 days
 
 ## Research Topics
 

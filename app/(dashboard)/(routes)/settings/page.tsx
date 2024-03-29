@@ -1,4 +1,3 @@
-'use client'
 import { Heading } from '@/components/heading'
 import SettingsPanel from '@/components/settings-panel'
 import { Settings } from 'lucide-react'

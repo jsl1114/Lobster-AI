@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "stripe:login": "stripe login",
+    "stripe:local": "stripe listen --forward-to localhost:3000/api/webhook",
+    "prisma": "npx prisma studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
@@ -30,6 +33,7 @@
     "react-hook-form": "^7.51.0",
     "react-markdown": "^9.0.1",
     "replicate": "^0.28.1",
+    "stripe": "^14.23.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",

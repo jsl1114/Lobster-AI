@@ -1,13 +1,17 @@
-import { useUser } from '@clerk/nextjs'
+import { checkSubscription } from '@/lib/subscription'
+import { SubscriptionButton } from './subscription_button'
 
-const SettingsPanel = () => {
-  const user = useUser().user
+const SettingsPanel = async () => {
+  const isPro = await checkSubscription()
+
   return (
-    <div className='px-4 lg:px-8 flex flex-col items-start gap-x-3 mb-8'>
-      <h1 className='text-3xl'>
-        Welcome, {user?.firstName} {user?.lastName}.
-      </h1>
-      <pre>email: {user?.emailAddresses[0].emailAddress}</pre>
+    <div className='px-4 lg:px-8 space-y-4'>
+      <div className='text-muted-foreground text-sm'>
+        {isPro
+          ? 'You are subscribed to Lobster Pro'
+          : 'You are currently on a free plan'}
+      </div>
+      <SubscriptionButton isPro={isPro} />
     </div>
   )
 }
