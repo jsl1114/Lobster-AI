@@ -3,10 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { increaseApiLimit, checkAPiLimit } from '@/lib/api-limit'
+import { checkSubscription } from '@/lib/subscription'
 
 const models = {
   chatgpt: 'https://api.openai.com/v1/',
-  pawan: 'https://api.pawan.krd/v1/',
+  pawan: 'https://api.pawan.krd/v1/', // Free endpoint, slower
 }
 
 const openai = new OpenAI({
@@ -39,16 +40,19 @@ export async function POST(req: NextRequest) {
     }
 
     const freeTrial = await checkAPiLimit()
+    const isPro = await checkSubscription()
 
-    if (!freeTrial)
+    if (!freeTrial && !isPro)
       return new NextResponse('Free trial has expired', { status: 403 }) //trigger the upgrade modal
 
     const response = await openai.chat.completions.create({
       messages: [instructionMessage, ...messages],
-      model: 'gpt-3.5-turbo-0125',
+      model: isPro ? 'gpt-4-0125-preview' : 'gpt-3.5-turbo-0125',
     })
 
-    await increaseApiLimit()
+    if (!isPro) {
+      await increaseApiLimit()
+    }
 
     return NextResponse.json(response.choices[0].message)
   } catch (err) {

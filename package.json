@@ -32,6 +32,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.0",
     "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
     "replicate": "^0.28.1",
     "stripe": "^14.23.0",
     "tailwind-merge": "^2.2.1",

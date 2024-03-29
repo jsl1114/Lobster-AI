@@ -20,6 +20,8 @@ import { cn } from '@/lib/utils'
 import { UserAvatar } from '@/components/user-avatar'
 import { BotAvatar } from '@/components/bot-avatar'
 import { useProModal } from '@/hooks/use-pro-modal'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const ConversationPage = () => {
   const proModal = useProModal()
@@ -118,7 +120,39 @@ const ConversationPage = () => {
                 )}
               >
                 {m.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                <p className='text-sm'>{m.content}</p>
+                {/* <p className='text-sm'>{m.content}</p> */}
+                <Markdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h3: ({ node, ...props }) => (
+                      <h3
+                        className='text-red-600 text-2xl font-mono font-semibold'
+                        {...props}
+                      />
+                    ),
+                    strong: ({ node, ...props }) => (
+                      <strong
+                        className='text-blue-500 bg-cyan-500/10'
+                        {...props}
+                      />
+                    ),
+                    td: ({ node, ...props }) => (
+                      <td
+                        className='border-2 border-dotted border-[#FA7878] rounded-lg'
+                        {...props}
+                      />
+                    ),
+                    th: ({ node, ...props }) => (
+                      <th
+                        className='border-2 border-dotted border-[#FA7878] rounded-lg'
+                        {...props}
+                      />
+                    ),
+                  }}
+                  className='overflow-hidden leading-7'
+                >
+                  {m.content}
+                </Markdown>
               </div>
             ))}
           </div>
