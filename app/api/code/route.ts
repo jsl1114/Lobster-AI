@@ -25,7 +25,7 @@ const openai = new OpenAI({
 const instructionMessage: ChatCompletionMessageParam = {
   role: 'system',
   content:
-    'You are a code generator. You will answer in markdown style, along with plain texts. Do not include the leading ```markdown and trailing ```',
+    'You are a code generator. You will answer in markdown style, along with plain texts. Do not include the leading ```markdown and trailing ```. Additionally, use the specific LaTeX math mode delimiters for your response as specified here: inline math mode : `$` and `$` ; display math mode: `$$\n` and `\n$$`.',
 }
 
 export async function POST(req: NextRequest) {

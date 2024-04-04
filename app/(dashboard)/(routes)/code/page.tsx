@@ -19,7 +19,12 @@ import { Loader } from '@/components/loader'
 import { cn } from '@/lib/utils'
 import { UserAvatar } from '@/components/user-avatar'
 import { BotAvatar } from '@/components/bot-avatar'
+
 import Markdown from 'react-markdown'
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
+import 'katex/dist/katex.min.css'
+
 import { useProModal } from '@/hooks/use-pro-modal'
 
 const CodePage = () => {
@@ -120,6 +125,8 @@ const CodePage = () => {
               >
                 {m.role === 'user' ? <UserAvatar /> : <BotAvatar />}
                 <Markdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
                   components={{
                     pre: ({ node, ...props }) => (
                       <div className='overflow-auto w-full my-2 bg-orange-500/10 p-2 rounded-lg'>
@@ -132,6 +139,20 @@ const CodePage = () => {
                         {...props}
                       />
                     ),
+                    span: ({ node, className, ...props }) => {
+                      const match = /katex/.exec(className || '')
+                      return match ? (
+                        <span
+                          {...props}
+                          className={className + ' text-[#6F63F1]'}
+                        />
+                      ) : (
+                        <span
+                          {...props}
+                          className={className}
+                        />
+                      )
+                    },
                   }}
                   className='text-sm overflow-hidden leading-7'
                 >

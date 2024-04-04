@@ -22,6 +22,9 @@ import { BotAvatar } from '@/components/bot-avatar'
 import { useProModal } from '@/hooks/use-pro-modal'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 
 const ConversationPage = () => {
   const proModal = useProModal()
@@ -122,7 +125,8 @@ const ConversationPage = () => {
                 {m.role === 'user' ? <UserAvatar /> : <BotAvatar />}
                 {/* <p className='text-sm'>{m.content}</p> */}
                 <Markdown
-                  remarkPlugins={[remarkGfm]}
+                  remarkPlugins={[remarkGfm, remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
                   components={{
                     h3: ({ node, ...props }) => (
                       <h3
@@ -148,6 +152,20 @@ const ConversationPage = () => {
                         {...props}
                       />
                     ),
+                    span: ({ node, className, ...props }) => {
+                      const match = /katex/.exec(className || '')
+                      return match ? (
+                        <span
+                          {...props}
+                          className={className + ' text-[#6F63F1]'}
+                        />
+                      ) : (
+                        <span
+                          {...props}
+                          className={className}
+                        />
+                      )
+                    },
                   }}
                   className='overflow-hidden leading-7'
                 >

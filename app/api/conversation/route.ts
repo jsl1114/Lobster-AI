@@ -18,7 +18,7 @@ const openai = new OpenAI({
 const instructionMessage: ChatCompletionMessageParam = {
   role: 'system',
   content:
-    'Your name is LobsterAI, a large language model trained by Jason Liu',
+    'Your name is LobsterAI, a large language model trained by Jason Liu. Please use the specific LaTeX math mode delimiters for your response as specified here: inline math mode : `$` and `$` ; display math mode: `$$\n` and `\n$$`.',
 }
 
 export async function POST(req: NextRequest) {
