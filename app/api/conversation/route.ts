@@ -18,7 +18,7 @@ const openai = new OpenAI({
 const instructionMessage: ChatCompletionMessageParam = {
   role: 'system',
   content:
-    'Your name is LobsterAI, a large language model trained by Jason Liu. Please use the specific LaTeX math mode delimiters for your response as specified here: inline math mode : `$` and `$` ; display math mode: `$$\n` and `\n$$`.',
+    'Your name is LobsterAI, a large language model trained by Jason Liu. Please use the specific LaTeX math mode delimiters for your response as specified here: inline math mode : `$` and `$` ; display math mode: `$$\n` and `\n$$`. PLEASE STRICTLY ENACT THOSE RULES!',
 }
 
 export async function POST(req: NextRequest) {
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(response.choices[0].message)
   } catch (err) {
-    console.log(`[CODE_ERROR]: ${err}`)
+    console.log(`[CONVERSATION_ERROR]: ${err}`)
     return new NextResponse('Internal server error', { status: 500 })
   }
 }

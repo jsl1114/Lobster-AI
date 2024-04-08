@@ -4,14 +4,12 @@ import Link from 'next/link'
 const LandingPage = () => {
   return (
     <div>
+      <h1 className='text-white'>Landing page not implemented yet</h1>
       <Link
-        href='/sign-in'
+        href='/dashboard'
         className='pr-10'
       >
-        <Button>Login</Button>
-      </Link>
-      <Link href='/sign-up'>
-        <Button>Register</Button>
+        <Button>Go to dashboard</Button>
       </Link>
     </div>
   )

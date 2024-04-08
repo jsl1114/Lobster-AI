@@ -130,13 +130,13 @@ const ConversationPage = () => {
                   components={{
                     h3: ({ node, ...props }) => (
                       <h3
-                        className='text-red-600 text-2xl font-mono font-semibold'
+                        className='text-red-600 underline text-2xl font-mono font-semibold my-5'
                         {...props}
                       />
                     ),
                     strong: ({ node, ...props }) => (
                       <strong
-                        className='text-blue-500 bg-cyan-500/10'
+                        className='text-blue-700 bg-cyan-500/10'
                         {...props}
                       />
                     ),
@@ -157,7 +157,7 @@ const ConversationPage = () => {
                       return match ? (
                         <span
                           {...props}
-                          className={className + ' text-[#6F63F1]'}
+                          className={className + ' text-[#524aad]'}
                         />
                       ) : (
                         <span
