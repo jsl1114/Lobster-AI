@@ -6,6 +6,14 @@ Recall how you have to wander around the internet on different platforms to find
 
 Lobster AI is a paid AI service that combines major AI platforms and further enhances your interactions with AI. Let the Lobster be in the palm of your hand! Start to have conversations, generate image, music, videos, code with the powerful Lobster! 
 
+## Developer's Notes
+1. When NEXT_PUBLIC_NODE_ENV=production, the app will adapt to the cims linserv1 server, meaning that it will
+   1. remove unsupported music generation and video generation features (api does not work due to node version cap)
+   2. set chatgpt api model to only use 3.5 turbo (same reason above)
+   3. use next13 (slower compile and larger build files, same reason)
+2. NEXT_PUBLIC_NODE_ENV=development, full features as advertised, all working
+3. stripe and landing page still under development
+
 
 ## Data Model
 

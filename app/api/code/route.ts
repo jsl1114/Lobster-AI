@@ -8,7 +8,10 @@ const models = {
   chatgpt: {
     baseUrl: 'https://api.openai.com/v1/',
     apiKey: process.env['OPENAI_API_KEY'],
-    model: 'gpt-3.5-turbo-0125',
+    model:
+      process.env.NEXT_PUBLIC_NODE_ENV === 'production'
+        ? 'gpt-3.5-turbo-0125'
+        : 'gpt-4-0125-preview',
   },
   pawan: {
     baseUrl: 'https://api.pawan.krd/v1/',
