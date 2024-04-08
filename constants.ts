@@ -10,7 +10,7 @@ import {
 export const MAX_FREE_COUNTS = 30
 
 export const tools =
-  process.env.NODE_ENV === 'production'
+  process.env.NEXT_PUBLIC_NODE_ENV === 'production'
     ? [
         {
           label: 'Conversation',
@@ -20,11 +20,11 @@ export const tools =
           bgColor: 'bg-violet-500/10',
         },
         {
-          label: 'Music Generation',
-          icon: Music,
-          href: '/music',
-          color: 'text-emerald-400',
-          bgColor: 'bg-emerald-400/10',
+          label: 'Image Generation',
+          icon: ImagesIcon,
+          href: '/image',
+          color: 'text-pink-700',
+          bgColor: 'bg-pink-700/10',
         },
         {
           label: 'Code Generation',

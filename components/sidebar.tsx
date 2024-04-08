@@ -19,7 +19,7 @@ import { FreeCounter } from './free-counter'
 const montserrat = Montserrat({ weight: '600', subsets: ['latin'] })
 
 const routes =
-  process.env.NODE_ENV === 'production'
+  process.env.NEXT_PUBLIC_NODE_ENV === 'production'
     ? [
         {
           label: 'Dashboard',
