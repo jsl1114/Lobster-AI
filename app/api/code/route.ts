@@ -9,9 +9,9 @@ const models = {
     baseUrl: 'https://api.openai.com/v1/',
     apiKey: process.env['OPENAI_API_KEY'],
     model:
-      process.env.NEXT_PUBLIC_NODE_ENV === 'production'
-        ? 'gpt-3.5-turbo-0125'
-        : 'gpt-4-turbo-2024-04-09',
+      process.env.NEXT_PUBLIC_NODE_ENV === 'development'
+        ? 'gpt-4-turbo-2024-04-09'
+        : 'gpt-3.5-turbo-0125',
   },
   pawan: {
     baseUrl: 'https://api.pawan.krd/v1/',
