@@ -1,4 +1,7 @@
 # Lobster AI
+*Vercel deployment now out at <b><a target='_blank' href='https://lobster-ai.vercel.app'>lobster-ai.vercel.app</a></b>*
+
+*To access CIMS deployment, <a target='_blank' href='http://linserv1.cims.nyu.edu:18923/'>click here</a>*
 
 ## Overview
 
@@ -6,13 +9,14 @@ Recall how you have to wander around the internet on different platforms to find
 
 Lobster AI is a paid AI service that combines major AI platforms and further enhances your interactions with AI. Let the Lobster be in the palm of your hand! Start to have conversations, generate image, music, videos, code with the powerful Lobster! 
 
-## Developer's Notes
+## Developer's Notes (Apply to NYU CIMS deployment only)
 1. When NEXT_PUBLIC_NODE_ENV=production, the app will adapt to the cims linserv1 server, meaning that it will
    1. remove unsupported music generation and video generation features (api does not work due to node version cap)
    2. set chatgpt api model to only use 3.5 turbo (same reason above)
    3. use next13 (slower compile and larger build files, same reason)
 2. NEXT_PUBLIC_NODE_ENV=development, full features as advertised, all working
 3. stripe and landing page still under development
+4. The vercel deployment has all features working, see link at top of page
 
 
 ## Data Model
