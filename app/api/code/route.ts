@@ -11,7 +11,7 @@ const models = {
     model:
       process.env.NEXT_PUBLIC_NODE_ENV === 'production'
         ? 'gpt-3.5-turbo-0125'
-        : 'gpt-4-0125-preview',
+        : 'gpt-4-turbo-2024-04-09',
   },
   pawan: {
     baseUrl: 'https://api.pawan.krd/v1/',

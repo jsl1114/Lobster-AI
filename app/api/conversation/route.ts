@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       messages: [instructionMessage, ...messages],
       model:
         isPro && process.env.NEXT_PUBLIC_NODE_ENV === 'development'
-          ? 'gpt-4-0125-preview'
+          ? 'gpt-4-turbo-2024-04-09'
           : 'gpt-3.5-turbo-0125',
     })
 
