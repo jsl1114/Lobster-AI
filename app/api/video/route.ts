@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { increaseApiLimit, checkAPiLimit } from '@/lib/api-limit'
+import { checkSubscription } from '@/lib/subscription'
 
 const replicate = new Replicate({ auth: process.env['REPLICATE_API_TOKEN'] })
 
@@ -20,8 +21,9 @@ export async function POST(req: NextRequest) {
     }
 
     const freeTrial = await checkAPiLimit()
+    const isPro = await checkSubscription()
 
-    if (!freeTrial)
+    if (!freeTrial && !isPro)
       return new NextResponse('Free trial has expired', { status: 403 }) //trigger the upgrade modal
 
     const output = await replicate.run(
@@ -44,7 +46,7 @@ export async function POST(req: NextRequest) {
       }
     )
 
-    await increaseApiLimit()
+    if (!isPro) await increaseApiLimit()
 
     return NextResponse.json(output)
   } catch (err) {

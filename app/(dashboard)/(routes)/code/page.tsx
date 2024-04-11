@@ -26,6 +26,7 @@ import remarkMath from 'remark-math'
 import 'katex/dist/katex.min.css'
 
 import { useProModal } from '@/hooks/use-pro-modal'
+import toast from 'react-hot-toast'
 
 const CodePage = () => {
   const proModal = useProModal()
@@ -59,6 +60,8 @@ const CodePage = () => {
     } catch (err: any) {
       if (err?.response?.status === 403) {
         proModal.onOpen()
+      } else {
+        toast.error('Something went wrong')
       }
     } finally {
       router.refresh()

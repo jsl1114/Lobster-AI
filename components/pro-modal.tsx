@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import axios from 'axios'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const tools = [
   {
@@ -70,7 +71,7 @@ export const ProModal = () => {
 
       window.location.href = response.data.url
     } catch (error) {
-      console.log(error, 'Stripe client error')
+      toast.error('Something went wrong')
     } finally {
       setLoading(false)
     }
@@ -117,9 +118,10 @@ export const ProModal = () => {
             size='lg'
             className='w-full font-bold'
             onClick={onSubscibe}
+            disabled={loading}
           >
             <Zap className='w-4 h-4 mr-2 fill-white' />
-            Purchase
+            Upgrade
           </Button>
         </DialogFooter>
       </DialogContent>

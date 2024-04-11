@@ -6,6 +6,8 @@ import { dark } from '@clerk/themes'
 import { ModalProvider } from '@/components/modal-provider'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { ToasterProvider } from '@/components/toaster-provider'
+import { CrispProvider } from '@/components/crisp-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,8 +28,10 @@ export default function RootLayout({
       }}
     >
       <html lang='en'>
+        <CrispProvider />
         <body className={inter.className}>
           <ModalProvider />
+          <ToasterProvider />
           {children}
           <Analytics />
           <SpeedInsights />
