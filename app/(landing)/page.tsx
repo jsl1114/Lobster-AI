@@ -1,16 +1,13 @@
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { LandingContent } from '@/components/landing-content'
+import { LandingHero } from '@/components/landing-hero'
+import { LandingNavbar } from '@/components/landing-navbar'
 
 const LandingPage = () => {
   return (
-    <div>
-      <h1 className='text-white'>Landing page not implemented yet</h1>
-      <Link
-        href='/dashboard'
-        className='pr-10'
-      >
-        <Button>Go to dashboard</Button>
-      </Link>
+    <div className='h-full'>
+      <LandingNavbar />
+      <LandingHero />
+      <LandingContent />
     </div>
   )
 }
