@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 import { Heading } from "@/components/heading";
@@ -7,7 +7,7 @@ import { HistoryIcon } from "lucide-react";
 import { HistoryList } from "./components/history-list";
 
 const HistoryPage = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     redirect("/");

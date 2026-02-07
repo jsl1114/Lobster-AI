@@ -1,43 +1,49 @@
-'use client'
-import { ArrowRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-import { Card } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
+import prismadb from "@/lib/prismadb";
+import { ToolsList } from "./components/tools-list";
+import { HistoryList } from "@/app/(dashboard)/(routes)/history/components/history-list";
 
-import { tools } from '@/constants'
+const DashboardPage = async () => {
+  const { userId } = await auth();
 
-export default function HomePage() {
-  const router = useRouter()
+  if (!userId) {
+    redirect("/");
+  }
+
+  const latestHistory = await prismadb.history.findFirst({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <div>
-      <div className='mb-8 space-y-4'>
-        <h2 className='text-2xl md:text-4xl font-bold text-center'>
-          Explore the power of AI
-        </h2>
-        <p className='text-muted-foreground font-light text-sm md:text-lg text-center'>
-          Chat with the smartest <b className='text-red-500'>Lobster AI</b> and
-          experience the power of it
-        </p>
-      </div>
-      <div className='px-4 md:px-20 lg:px-32 space-y-4'>
-        {tools.map((tool) => (
-          <Card
-            onClick={() => router.push(tool.href)}
-            key={tool.href}
-            className='p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer'
-          >
-            <div className='flex items-center gap-x-4'>
-              <div className={cn('p-2 w-fit rounded-md', tool.bgColor)}>
-                <tool.icon className={cn('w-8 h-8', tool.color)} />
-              </div>
-              <div className='font-semibold'>{tool.label}</div>
-            </div>
-            <ArrowRight className='w-5 h-5' />
-          </Card>
-        ))}
-      </div>
+      <ToolsList />
+      {latestHistory && (
+        <div className="px-4 md:px-20 lg:px-32 space-y-4 mt-10 pb-10">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl md:text-2xl font-bold">
+              Latest Conversation
+            </h2>
+            <Link
+              href="/history"
+              className="text-sm text-muted-foreground hover:text-primary transition flex items-center"
+            >
+              View history <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+          <HistoryList items={[latestHistory]} />
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
+
+export default DashboardPage;

@@ -1,26 +1,27 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { historyId: string } },
+  { params }: { params: Promise<{ historyId: string }> },
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
+    const { historyId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!params.historyId) {
+    if (!historyId) {
       return new NextResponse("History ID is required", { status: 400 });
     }
 
     const history = await prismadb.history.deleteMany({
       where: {
-        id: params.historyId,
+        id: historyId,
         userId: userId,
       },
     });
