@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
@@ -29,12 +29,23 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { useProModal } from "@/hooks/use-pro-modal";
+import { useHistoryStore } from "@/hooks/use-history-store";
 import toast from "react-hot-toast";
 
 const CodePage = () => {
   const proModal = useProModal();
+  const historyStore = useHistoryStore();
   const router = useRouter();
   const [messages, setMessages] = useState<any[]>([]);
+  const [parentId, setParentId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (historyStore.messages.length > 0) {
+      setMessages(historyStore.messages);
+      setParentId(historyStore.parentId);
+      historyStore.clearMessages();
+    }
+  }, [historyStore]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,9 +66,11 @@ const CodePage = () => {
 
       const res = await axios.post("/api/code", {
         messages: newMessages,
+        parentId,
       });
 
       setMessages((current) => [...current, userMessage, res.data]);
+      setParentId(res.data.id);
 
       form.reset();
     } catch (err: any) {

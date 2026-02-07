@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { increaseApiLimit, checkAPiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
+import prismadb from "@/lib/prismadb";
 
 const models = {
   chatgpt: "https://api.openai.com/v1/",
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
   try {
     const { userId } = auth();
     const body = await req.json();
-    const { messages } = body;
+    const { messages, parentId } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 400 });
@@ -70,7 +71,21 @@ export async function POST(req: NextRequest) {
         await increaseApiLimit();
       }
 
-      return NextResponse.json({ role: "assistant", content: responseText });
+      const savedHistory = await prismadb.history.create({
+        data: {
+          userId,
+          prompt: lastMessage.content,
+          answer: responseText,
+          type: "conversation",
+          parentId: parentId,
+        },
+      });
+
+      return NextResponse.json({
+        role: "assistant",
+        content: responseText,
+        id: savedHistory.id,
+      });
     }
 
     const response = await openai.chat.completions.create({
@@ -85,7 +100,20 @@ export async function POST(req: NextRequest) {
       await increaseApiLimit();
     }
 
-    return NextResponse.json(response.choices[0].message);
+    const savedHistory = await prismadb.history.create({
+      data: {
+        userId,
+        prompt: messages[messages.length - 1].content,
+        answer: response.choices[0].message.content as string,
+        type: "conversation",
+        parentId: parentId,
+      },
+    });
+
+    return NextResponse.json({
+      ...response.choices[0].message,
+      id: savedHistory.id,
+    });
   } catch (err) {
     console.log(`[CONVERSATION_ERROR]: ${err}`);
     return new NextResponse("Internal server error", { status: 500 });

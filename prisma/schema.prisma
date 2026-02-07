@@ -35,3 +35,15 @@ model UserSubscription {
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
+
+model History {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  type      String // "conversation" | "code"
+  prompt    String
+  answer    String
+  createdAt DateTime  @default(now())
+  parentId  String?   @db.ObjectId
+  parent    History?  @relation("HistoryToHistory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children  History[] @relation("HistoryToHistory")
+}

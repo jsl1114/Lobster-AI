@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { useHistoryStore } from "@/hooks/use-history-store";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -31,8 +32,18 @@ import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const ConversationPage = () => {
   const proModal = useProModal();
+  const historyStore = useHistoryStore();
   const router = useRouter();
   const [messages, setMessages] = useState<any[]>([]);
+  const [parentId, setParentId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (historyStore.messages.length > 0) {
+      setMessages(historyStore.messages);
+      setParentId(historyStore.parentId);
+      historyStore.clearMessages();
+    }
+  }, [historyStore]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,9 +64,11 @@ const ConversationPage = () => {
 
       const res = await axios.post("/api/conversation", {
         messages: newMessages,
+        parentId,
       });
 
       setMessages((current) => [...current, userMessage, res.data]);
+      setParentId(res.data.id);
 
       form.reset();
     } catch (err: any) {
