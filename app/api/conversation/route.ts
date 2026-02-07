@@ -8,6 +8,7 @@ import {
 } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createOpenAI } from "@ai-sdk/openai";
+import { after } from "next/server";
 
 import { increaseApiLimit, checkAPiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
@@ -82,16 +83,6 @@ export async function POST(req: NextRequest) {
 
     const modelMessages = await convertToModelMessages(messages);
 
-    const onFinish = async ({ text }: { text: string }) => {
-      if (!isPro) {
-        await increaseApiLimit();
-      }
-      await prismadb.history.update({
-        where: { id: historyRecord.id },
-        data: { answer: text },
-      });
-    };
-
     // Build the ordered list of models to attempt
     const modelsToTry: LanguageModel[] = [];
 
@@ -124,7 +115,22 @@ export async function POST(req: NextRequest) {
           model: modelsToTry[i],
           system: systemPrompt,
           messages: modelMessages,
-          onFinish,
+        });
+
+        // Schedule history save to run after the response finishes streaming
+        after(async () => {
+          try {
+            const text = await result.text;
+            if (!isPro) {
+              await increaseApiLimit();
+            }
+            await prismadb.history.update({
+              where: { id: historyRecord.id },
+              data: { answer: text },
+            });
+          } catch (err) {
+            console.error("[CONVERSATION] Failed to save history:", err);
+          }
         });
 
         // Force the first chunk so a rate-limit error surfaces here
