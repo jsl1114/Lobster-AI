@@ -70,6 +70,7 @@ const ConversationPage = () => {
       const formattedMessages = historyStore.messages.map((msg: any) => ({
         ...msg,
         id: msg.id || Math.random().toString(36).substring(7),
+        parts: msg.parts || [{ type: "text", text: msg.content }],
       }));
       setMessages(formattedMessages);
       parentIdRef.current = historyStore.parentId;
